@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <list>
 
 using namespace std;
 
@@ -13,7 +12,7 @@ int getIndex(int x, int y, int width) {
 int main() {
 
 	/* vars */
-	string version, z, a;
+	string version, z;
 	int x=0, y=0, index=-1, width, height, depth, i; // index -1 to skip an empty row in the beginning of the file.... ?!
 
 	/* filestreams */
