@@ -1,51 +1,44 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <list>
+
 using namespace std;
 
 int main() {
 
-	string imgcontent, line, width, height, depth;
-	// prompt user for filename?
-	ifstream inimg ("image.pgm");
-	ofstream write ("object.off");
+	string version, z, a;
+	int x=0, y=0, index=-1, width, height, depth; // index -1 to skip an empty row in the beginning of the file.... ?!
 
-	int line_num;
+	ifstream fin ("image.pgm");
+	ofstream fout ("mesh.off");
 
-	inimg >> imgcontent;
+	fin >> version >> width >> height >> depth; // img params
 
-	line_num = 0;
-	while(inimg.good()){
-  		while(line_num < 5){
-			getline(inimg, line);
-			//cout << line_num << endl;
-			//cout << line << endl;
+	int indices[width*height];
+	int face[4];
 
-			// get width and height
-			if(line_num == 2){
+	fout << "OFF" << endl;
+	fout << width*height << " " << (width*height)/3 << " " << "0" << endl;
 
+	while(fin.good()) {
+		getline(fin, z);
+		if (index > -1) {
+
+			fout << x << " " << y << " " << z << endl;
+
+			x += 1; // create the coords
+			if ( x == width - 1 ) { // increase y when x reaches width of image (new row)
+				x = 0;
+				y += 1;
 			}
-
-			// get depth
-			if(line_num == 10) { // depth
-
-			}
-
-			// read image contents
-
-			// cout << line << endl;
-			line_num += 1;
-  		}
-  		break;
+		}
+		index += 1;
 	}
 
+	fin.close();
+	fout.close();
 
-  	// output mesh.off
-
-	write << "yo";
-
-	inimg.close();
-	write.close();
-
+	cout << "-------- done --------" << endl;
   	return 0;
 }
