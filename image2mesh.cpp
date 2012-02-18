@@ -1,7 +1,8 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
-#include <list>
+#include <iomanip>
 
 using namespace std;
 
@@ -13,8 +14,9 @@ int getIndex(int x, int y, int width) {
 int main() {
 
 	/* vars */
-	string version, z, a;
-	int x=0, y=0, index=-1, width, height, depth, i; // index -1 to skip an empty row in the beginning of the file.... ?!
+	string version, z_string, line;
+	int index=-1, width, height, depth, i; // index -1 to skip an empty row in the beginning of the file.... ?!
+	float x=0, y=0, z;
 
 	/* filestreams */
 	ifstream fin ("image.pgm");
@@ -32,10 +34,12 @@ int main() {
 
 	/* write 3D coords */
 	while(fin.good() && y < height) {
-		getline(fin, z);
+		getline(fin, line);
 		if (index > -1) {
 
-			fout << x << " " << y << " " << z << endl;
+			istringstream z_string(line);
+			z_string >> z;
+			fout << setprecision (10) << fixed << x << " " << y << " " << z << endl;
 			indices[index][0] = x;
 			indices[index][1] = y;
 
@@ -59,6 +63,8 @@ int main() {
 			fout << "3 " << getIndex(x, y+1, width) << " " << getIndex(x+1, y+1, width) << " " << getIndex(x+1, y, width) << endl;
 		}
 	}
+
+	cout << sizeof(indices);
 
 	fin.close();
 	fout.close();
