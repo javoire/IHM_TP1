@@ -1,3 +1,8 @@
+/* INFSI351 */
+/* TP1 - .pgm to .off */
+/* Jonatan Dahl, dahl@enst.fr */
+/* 2012-02-20 */
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -22,12 +27,12 @@ int main() {
 	/* yank imgparams */
 	fin >> version >> width >> height >> depth;
 
-	/* indexlist + coords */
+	/* coords */
 	int indices[width*height][2];
 
 	/* write header lines */
 	fout << "OFF" << endl;
-	fout << width*height << " " << (width*height)/3 << " " << "0" << endl;
+	fout << width*height << " " << (width*height)*2 << " " << "0" << endl;
 
 	/* write 3D coords */
 	while(fin.good() && y < height) {
@@ -39,7 +44,7 @@ int main() {
 			indices[index][1] = y;
 
 			x += 1; // create the coords
-			if ( x == width ) { // increase y when x reaches width of image (new row)
+			if ( x == width ) { // increase y and reset x when x reaches width of image (new row)
 				x = 0;
 				y += 1;
 			}
@@ -47,7 +52,7 @@ int main() {
 		index += 1;
 	}
 
-	/* write face-relations */
+	/* create faces */
 	for ( i=0; i<height*width; i++) {
 
 		x = indices[i][0];
